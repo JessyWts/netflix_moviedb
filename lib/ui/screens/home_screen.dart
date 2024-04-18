@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +23,87 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             height: 500,
             color: Colors.red,
+          ),
+          const SizedBox(height: 15.0,),
+          Text(
+            'Tendances actuelles',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize:18,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          const SizedBox(height: 5.0,),
+          SizedBox(
+            height: 160,
+            child: ListView.builder(
+              itemCount: 10,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Container(
+                  width: 110.0,
+                  margin: const EdgeInsets.only(right: 8.0),
+                  color: Colors.yellow,
+                  child: Center(
+                    child: Text(index.toString()),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 15.0,),
+          Text(
+            'Actuellement au cinema',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize:18,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          const SizedBox(height: 5.0,),
+          SizedBox(
+            height: 320,
+            child: ListView.builder(
+              itemCount: 10,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Container(
+                  width: 220.0,
+                  margin: const EdgeInsets.only(right: 8.0),
+                  color: Colors.blue,
+                  child: Center(
+                    child: Text(index.toString()),
+                  ),
+                );
+              },
+            ),
+          ),
+          const SizedBox(height: 15.0,),
+          Text(
+            'Bientôt disponible',
+            style: GoogleFonts.poppins(
+              color: Colors.white,
+              fontSize:18,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+          const SizedBox(height: 5.0,),
+          SizedBox(
+            height: 160,
+            child: ListView.builder(
+              itemCount: 10,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) {
+                return Container(
+                  width: 110.0,
+                  margin: const EdgeInsets.only(right: 8.0),
+                  color: Colors.green,
+                  child: Center(
+                    child: Text(index.toString()),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
