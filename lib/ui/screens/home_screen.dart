@@ -41,21 +41,24 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           MovieCategory(
             label: 'Tendances actuelles',
-            movieList: dataprovider.popularMovieList,
             imageHeight: 160.0,
-            imageWidth: 110.0
+            imageWidth: 110.0,
+            movieList: dataprovider.popularMovieList,
+            callback: dataprovider.getPopularMovies,
           ),
-          const MovieCategory(
+          MovieCategory(
             label: 'Actuellement au cinema',
-            movieList: [],
             imageHeight: 320.0,
-            imageWidth: 220.0
+            imageWidth: 220.0,
+            movieList:  dataprovider.nowPlayingMovieList,
+            callback: dataprovider.getNowPlayingMovies,
           ),
-          const MovieCategory(
+          MovieCategory(
             label: 'Bientôt disponible',
-            movieList: [],
             imageHeight: 160,
-            imageWidth: 110.0
+            imageWidth: 110.0,
+            movieList: dataprovider.upcomingMovieList,
+            callback: dataprovider.getUpcomingMovies,
           ),
         ],
       ),

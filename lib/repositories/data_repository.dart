@@ -7,8 +7,14 @@ class DataRepository with ChangeNotifier {
   final APIService apiService = APIService();
   final List<MovieModel> _popularMovieList = [];
   int _popularMoviePageIndex = 1;
+  final List<MovieModel> _nowPlayingMovieList = [];
+  int _nowPlayingMoviePageIndex = 1;
+  final List<MovieModel> _upcomingMovieList = [];
+  int _upcominMoviePageIndex = 1;
 
   List<MovieModel> get popularMovieList => _popularMovieList;
+  List<MovieModel> get nowPlayingMovieList => _nowPlayingMovieList;
+  List<MovieModel> get upcomingMovieList => _upcomingMovieList;
 
   Future<void> getPopularMovies() async {
     try {
@@ -22,7 +28,33 @@ class DataRepository with ChangeNotifier {
     }
   }
 
+  Future<void> getNowPlayingMovies() async {
+    try {
+      List<MovieModel> movies = await apiService.getNowPlayingMovies(pageNumber: _nowPlayingMoviePageIndex);
+      _nowPlayingMovieList.addAll(movies);
+      _nowPlayingMoviePageIndex++;
+      notifyListeners();
+    } on Response catch (response) {
+      debugPrint("Error: ${response.statusCode}");
+      rethrow;
+    }
+  }
+
+  Future<void> getUpcomingMovies() async {
+    try {
+      List<MovieModel> movies = await apiService.geUpcomingMovies(pageNumber: _upcominMoviePageIndex);
+      _upcomingMovieList.addAll(movies);
+      _upcominMoviePageIndex++;
+      notifyListeners();
+    } on Response catch (response) {
+      debugPrint("Error: ${response.statusCode}");
+      rethrow;
+    }
+  }
+
   Future<void> initData() async {
     await getPopularMovies();
+    await getNowPlayingMovies();
+    await getUpcomingMovies();
   }
 }
