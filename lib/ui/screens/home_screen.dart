@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:netfix_moviedb/models/movie_model.dart';
+import 'package:netfix_moviedb/repositories/data_repository.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({ super.key });
@@ -10,8 +13,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<MovieModel>? movies;
+
+  @override
+  void initState() {
+    super.initState();
+    getMovies();
+  }
+
+  getMovies() async {
+    final dataprovider = Provider.of<DataRepository>(context, listen: false);
+    await dataprovider.getPopularMovies();
+  }
+  
   @override
   Widget build(BuildContext context) {
+    final dataprovider = Provider.of<DataRepository>(context);
+
     return Scaffold(
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
@@ -23,6 +41,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             height: 500,
             color: Colors.red,
+            child: dataprovider.popularMovieList.isEmpty
+              ? const Center()
+              : Image.network(
+                dataprovider.popularMovieList[0].posterURL(),
+                fit: BoxFit.cover,
+              ),
           ),
           const SizedBox(height: 15.0,),
           Text(
@@ -44,9 +68,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   width: 110.0,
                   margin: const EdgeInsets.only(right: 8.0),
                   color: Colors.yellow,
-                  child: Center(
-                    child: Text(index.toString()),
-                  ),
+                  child: dataprovider.popularMovieList.isEmpty
+                    ? Center(
+                      child: Text(index.toString()),
+                    )
+                    : Image.network(
+                      dataprovider.popularMovieList[index].posterURL(),
+                      fit: BoxFit.cover,
+                    ),
                 );
               },
             ),
