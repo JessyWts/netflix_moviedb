@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
-import 'package:netfix_moviedb/ui/screens/home_screen.dart';
+import 'package:netfix_moviedb/ui/screens/loading_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       //   // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       //   useMaterial3: true,
       // ),
-      home: HomeScreen(),
+      home: LoadingScreen(),
     );
   }
 }

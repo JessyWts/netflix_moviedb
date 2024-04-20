@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
+import 'package:netfix_moviedb/ui/widgets/movie_card.dart';
+import 'package:netfix_moviedb/ui/widgets/movie_category.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
 import 'package:provider/provider.dart';
 
@@ -18,12 +19,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    getMovies();
-  }
-
-  getMovies() async {
-    final dataprovider = Provider.of<DataRepository>(context, listen: false);
-    await dataprovider.getPopularMovies();
   }
   
   @override
@@ -38,101 +33,29 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: ListView(
         children: [
-          Container(
-            height: 500,
-            color: Colors.red,
+          SizedBox(
+            height: 500.0,
             child: dataprovider.popularMovieList.isEmpty
               ? const Center()
-              : Image.network(
-                dataprovider.popularMovieList[0].posterURL(),
-                fit: BoxFit.cover,
-              ),
+              : MovieCard(movie: dataprovider.popularMovieList.first),
           ),
-          const SizedBox(height: 15.0,),
-          Text(
-            'Tendances actuelles',
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize:18,
-              fontWeight: FontWeight.bold
-            ),
+          MovieCategory(
+            label: 'Tendances actuelles',
+            movieList: dataprovider.popularMovieList,
+            imageHeight: 160.0,
+            imageWidth: 110.0
           ),
-          const SizedBox(height: 5.0,),
-          SizedBox(
-            height: 160,
-            child: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: 110.0,
-                  margin: const EdgeInsets.only(right: 8.0),
-                  color: Colors.yellow,
-                  child: dataprovider.popularMovieList.isEmpty
-                    ? Center(
-                      child: Text(index.toString()),
-                    )
-                    : Image.network(
-                      dataprovider.popularMovieList[index].posterURL(),
-                      fit: BoxFit.cover,
-                    ),
-                );
-              },
-            ),
+          const MovieCategory(
+            label: 'Actuellement au cinema',
+            movieList: [],
+            imageHeight: 320.0,
+            imageWidth: 220.0
           ),
-          const SizedBox(height: 15.0,),
-          Text(
-            'Actuellement au cinema',
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize:18,
-              fontWeight: FontWeight.bold
-            ),
-          ),
-          const SizedBox(height: 5.0,),
-          SizedBox(
-            height: 320,
-            child: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: 220.0,
-                  margin: const EdgeInsets.only(right: 8.0),
-                  color: Colors.blue,
-                  child: Center(
-                    child: Text(index.toString()),
-                  ),
-                );
-              },
-            ),
-          ),
-          const SizedBox(height: 15.0,),
-          Text(
-            'Bientôt disponible',
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize:18,
-              fontWeight: FontWeight.bold
-            ),
-          ),
-          const SizedBox(height: 5.0,),
-          SizedBox(
-            height: 160,
-            child: ListView.builder(
-              itemCount: 10,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) {
-                return Container(
-                  width: 110.0,
-                  margin: const EdgeInsets.only(right: 8.0),
-                  color: Colors.green,
-                  child: Center(
-                    child: Text(index.toString()),
-                  ),
-                );
-              },
-            ),
+          const MovieCategory(
+            label: 'Bientôt disponible',
+            movieList: [],
+            imageHeight: 160,
+            imageWidth: 110.0
           ),
         ],
       ),
