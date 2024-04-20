@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
 import 'package:netfix_moviedb/ui/widgets/movie_infos.dart';
