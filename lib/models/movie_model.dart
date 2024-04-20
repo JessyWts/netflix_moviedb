@@ -1,3 +1,5 @@
+import 'package:netfix_moviedb/models/belongs_to_collection_model.dart';
+import 'package:netfix_moviedb/models/production_company_model.dart';
 import 'package:netfix_moviedb/services/api.dart';
 
 import 'genre_model.dart';
@@ -7,7 +9,7 @@ import 'spoken_language_model.dart';
 class MovieModel {
     final bool adult;
     final String backdropPath;
-    final String? belongsToCollection;
+    final BelongsToCollectionModel? belongsToCollection;
     final int? budget;
     final List<GenreModel>? genres;
     final List<int>? genreIds;
@@ -20,7 +22,7 @@ class MovieModel {
     final String overview;
     final double popularity;
     final String? posterPath;
-    final List<dynamic>? productionCompanies;
+    final List<ProductionCompanyModel>? productionCompanies;
     final List<ProductionCountryModel>? productionCountries;
     final DateTime releaseDate;
     final int? revenue;
@@ -66,7 +68,7 @@ class MovieModel {
     MovieModel copyWith({
         bool? adult,
         String? backdropPath,
-        dynamic belongsToCollection,
+        BelongsToCollectionModel? belongsToCollection,
         int? budget,
         List<GenreModel>? genres,
         List<int>? genreIds,
@@ -79,7 +81,7 @@ class MovieModel {
         String? overview,
         double? popularity,
         String? posterPath,
-        List<dynamic>? productionCompanies,
+        List<ProductionCompanyModel>? productionCompanies,
         List<ProductionCountryModel>? productionCountries,
         DateTime? releaseDate,
         int? revenue,
@@ -125,10 +127,10 @@ class MovieModel {
     factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
         adult: json["adult"] as bool,
         backdropPath: json["backdrop_path"] as String,
-        belongsToCollection: json["belongs_to_collection"] as String?,
+        belongsToCollection: json["belongs_to_collection"] != null ? BelongsToCollectionModel.fromJson(json["belongs_to_collection"]) : null,
         budget: json["budget"] as int?,
         genres: json["genres"] != null ? List<GenreModel>.from(json["genres"].map((x) => GenreModel.fromJson(x))) : [],
-        genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
+        genreIds: json["genre_ids"] != null ? List<int>.from(json["genre_ids"].map((x) => x)) : null,
         homepage: json["homepage"] as String?,
         id: json["id"] as int,
         imdbId: json["imdb_id"] as String?,
@@ -138,7 +140,7 @@ class MovieModel {
         overview: json["overview"] as String,
         popularity: json["popularity"]?.toDouble() as double,
         posterPath: json["poster_path"] as String?,
-        productionCompanies: json["production_companies"] != null ? List<dynamic>.from(json["production_companies"].map((x) => x)) : [],
+        productionCompanies: json["production_companies"] != null ? List<ProductionCompanyModel>.from(json["production_companies"].map((x) => ProductionCompanyModel.fromJson(x))) : [],
         productionCountries: json["production_countries"] != null ? List<ProductionCountryModel>.from(json["production_countries"].map((x) => ProductionCountryModel.fromJson(x))) : [],
         releaseDate: DateTime.parse(json["release_date"]),
         revenue: json["revenue"] as int?,
@@ -155,5 +157,17 @@ class MovieModel {
     String posterURL() {
       API api = API();
       return api.baseImageURL + posterPath!;
+    }
+
+    String formatGenres() {
+      String categories = '';
+      for (int i = 0; i < genres!.length; i++) {
+        if (i == genres!.length - 1) {
+          categories = categories + genres![i].name;
+        } else {
+          categories = '$categories${genres![i].name}, ';
+        }
+      }
+      return categories;
     }
 }
