@@ -1,16 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:netfix_moviedb/models/genre_model.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/services/api_service.dart';
 
 class DataRepository with ChangeNotifier {
   final APIService apiService = APIService();
+
   final List<MovieModel> _popularMovieList = [];
   int _popularMoviePageIndex = 1;
+
   final List<MovieModel> _nowPlayingMovieList = [];
   int _nowPlayingMoviePageIndex = 1;
+
   final List<MovieModel> _upcomingMovieList = [];
   int _upcominMoviePageIndex = 1;
+
+  List<GenreModel> genresList = [];
 
   List<MovieModel> get popularMovieList => _popularMovieList;
   List<MovieModel> get nowPlayingMovieList => _nowPlayingMovieList;
@@ -52,9 +58,34 @@ class DataRepository with ChangeNotifier {
     }
   }
 
+  Future<void> getMoviesGenres() async {
+    try {
+      genresList = await apiService.getMoviesGenres();
+      notifyListeners();
+      // List<GenreModel> genresList = await apiService.getMoviesGenres();
+      // return genresList;
+    } on Response catch (response) {
+      debugPrint("Error: ${response.statusCode}");
+      rethrow;
+    }
+  }
+
+  Future<MovieModel> getMoviesDetails({required MovieModel movie }) async {
+    try {
+       MovieModel movieDetails = await apiService.getMoviesDetails(movie: movie);
+      return movieDetails;
+    } on Response catch (response) {
+      debugPrint("Error: ${response.statusCode}");
+      rethrow;
+    }
+  }
+
   Future<void> initData() async {
-    await getPopularMovies();
-    await getNowPlayingMovies();
-    await getUpcomingMovies();
+    await Future.wait([
+      getMoviesGenres(),
+      getPopularMovies(),
+      getNowPlayingMovies(),
+      getUpcomingMovies()
+    ]);
   }
 }

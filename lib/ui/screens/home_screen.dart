@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
+import 'package:netfix_moviedb/ui/widgets/genre_list.dart';
 import 'package:netfix_moviedb/ui/widgets/movie_card.dart';
 import 'package:netfix_moviedb/ui/widgets/movie_category.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
@@ -29,7 +30,16 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: kBackgroundColor,
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
+         iconTheme: const IconThemeData(
+          color: Colors.white
+        ),
         leading: Image.asset('assets/images/netflix_logo_2.png'),
+        actions:  [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.menu,)
+          )
+        ],
       ),
       body: ListView(
         children: [
@@ -39,6 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
               ? const Center()
               : MovieCard(movie: dataprovider.popularMovieList.first),
           ),
+          GenreList(genresList: dataprovider.genresList),
+          const SizedBox(height: 15.0,),
           MovieCategory(
             label: 'Tendances actuelles',
             imageHeight: 160.0,

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:netfix_moviedb/models/genre_model.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/services/api.dart';
 
@@ -79,6 +80,36 @@ class APIService {
       }).toList();
 
       return movies;
+    } else {
+      throw response;
+    }
+  }
+
+  Future<List<GenreModel>> getMoviesGenres() async {
+    Response response = await getData('/genre/movie/list');
+
+    if (response.statusCode == 200) {
+      Map data = response.data;
+      
+      List<GenreModel> genres = data["genres"].map<GenreModel>((dynamic movieJson){
+       return GenreModel.fromJson(movieJson);
+      }).toList();
+
+      return genres;
+    } else {
+      throw response;
+    }
+  }
+
+  Future<MovieModel> getMoviesDetails({required MovieModel movie }) async {
+    Response response = await getData('/movie/${movie.id}');
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = response.data;
+      
+      MovieModel movie = MovieModel.fromJson(data);
+
+      return movie;
     } else {
       throw response;
     }
