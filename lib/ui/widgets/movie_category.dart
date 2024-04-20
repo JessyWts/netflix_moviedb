@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/ui/widgets/movie_card.dart';
+import 'package:netfix_moviedb/ui/widgets/reusable_text.dart';
 
 class MovieCategory extends StatelessWidget {
   final String label;
@@ -18,13 +19,12 @@ class MovieCategory extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 15.0,),
-          Text(
-            label,
-            style: GoogleFonts.poppins(
-              color: Colors.white,
-              fontSize:18,
-              fontWeight: FontWeight.bold
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ReusableText(text: label, color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+              const ReusableText(text: 'voir', color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+            ],
           ),
           const SizedBox(height: 5.0,),
           SizedBox(

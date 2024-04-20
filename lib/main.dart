@@ -15,14 +15,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'MovieDB',
       debugShowCheckedModeBanner: false,
-      // theme: ThemeData(
-      //   // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      //   useMaterial3: true,
-      // ),
-      home: LoadingScreen(),
+      theme: ThemeData(
+        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
+      home: const LoadingScreen(),
     );
   }
 }
