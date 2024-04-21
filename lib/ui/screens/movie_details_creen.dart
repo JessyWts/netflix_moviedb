@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
+import 'package:netfix_moviedb/ui/widgets/action_button.dart';
 import 'package:netfix_moviedb/ui/widgets/movie_infos.dart';
+import 'package:netfix_moviedb/ui/widgets/my_video_player.dart';
 import 'package:netfix_moviedb/ui/widgets/reusable_text.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
 import 'package:provider/provider.dart';
@@ -53,52 +55,32 @@ class _MovieDetailsCreenState extends State<MovieDetailsCreen> {
           padding: const EdgeInsets.all(8.0),
           child: ListView(
             children: [
-              Container(
-                height: 200.0,
+              SizedBox(
+                height: 220.0,
                 width: MediaQuery.of(context).size.width,
-                color: Colors.amber,
+                child: newMovie!.videos!.isEmpty
+                  ? const Center(
+                    child: ReusableText(text: 'Aucune vidéos', color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+                  )
+                  : MyVideoPlayer(video: newMovie!.videos!.first),
               ),
               MovieInfos(movie: newMovie!),
               const SizedBox(height: 10.0,),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.white,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.play_arrow,
-                      color: kBackgroundColor,
-                    ),
-                    const SizedBox(width: 5.0,),
-                    ReusableText(text: 'Lecture', color: kBackgroundColor, fontSize: 16.0, fontWeight: FontWeight.w600),
-                  ],
-                ),
+              ActionButton(
+                label: 'Lecture', icon: Icons.play_arrow, bgColor: Colors.white, color: kBackgroundColor,
               ),
               const SizedBox(height: 10.0),
-              Container(
-                height: 30,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(5.0),
-                  color: Colors.grey.withOpacity(0.3),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.download,
-                      color: Colors.white,
-                    ),
-                    SizedBox(width: 5.0,),
-                    ReusableText(text: 'Télécharger', color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.w600),
-                  ],
-                ),
+              ActionButton(
+                label: 'Télécharger', icon: Icons.download, bgColor:Colors.grey.withOpacity(0.3), color: Colors.white,
               ),
+              const SizedBox(height: 20.0,),
+              ReusableText(
+                text: newMovie!.overview,
+                color: Colors.white,
+                fontSize: 16, 
+                fontWeight: FontWeight.w400
+              ),
+              const SizedBox(height: 20.0,),
             ]
           ),
         ),
