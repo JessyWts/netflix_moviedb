@@ -22,7 +22,7 @@ class MovieCategory extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ReusableText(text: label, color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-              const ReusableText(text: 'voir', color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+              ReusableText(text: 'voir +', color: Colors.white.withOpacity(0.8), fontSize: 14, fontWeight: FontWeight.w500),
             ],
           ),
           const SizedBox(height: 5.0,),
