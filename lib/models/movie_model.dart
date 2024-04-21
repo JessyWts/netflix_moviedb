@@ -1,5 +1,6 @@
 import 'package:netfix_moviedb/models/belongs_to_collection_model.dart';
 import 'package:netfix_moviedb/models/production_company_model.dart';
+import 'package:netfix_moviedb/models/video_model.dart';
 import 'package:netfix_moviedb/services/api.dart';
 
 import 'genre_model.dart';
@@ -8,7 +9,7 @@ import 'spoken_language_model.dart';
 
 class MovieModel {
     final bool adult;
-    final String backdropPath;
+    final String? backdropPath;
     final BelongsToCollectionModel? belongsToCollection;
     final int? budget;
     final List<GenreModel>? genres;
@@ -34,10 +35,11 @@ class MovieModel {
     final bool video;
     final double voteAverage;
     final int voteCount;
+    final List<VideoModel>? videos;
 
     MovieModel({
         required this.adult,
-        required this.backdropPath,
+        this.backdropPath,
         required this.id,
         required this.originalLanguage,
         required this.originalTitle,
@@ -46,9 +48,9 @@ class MovieModel {
         required this.posterPath,
         required this.releaseDate,
         required this.title,
-        required this.video,
         required this.voteAverage,
         required this.voteCount,
+        required this.video,
         this.budget,
         this.genres,
         this.genreIds,
@@ -63,6 +65,7 @@ class MovieModel {
         this.status,
         this.tagline,
         this.belongsToCollection,
+        this.videos
     });
 
     MovieModel copyWith({
@@ -93,6 +96,7 @@ class MovieModel {
         bool? video,
         double? voteAverage,
         int? voteCount,
+        List<VideoModel>? videos,
     }) => 
         MovieModel(
             adult: adult ?? this.adult,
@@ -122,11 +126,12 @@ class MovieModel {
             video: video ?? this.video,
             voteAverage: voteAverage ?? this.voteAverage,
             voteCount: voteCount ?? this.voteCount,
+            videos: videos ?? this.videos,
         );
 
     factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
         adult: json["adult"] as bool,
-        backdropPath: json["backdrop_path"] as String,
+        backdropPath: json["backdrop_path"] as String?,
         belongsToCollection: json["belongs_to_collection"] != null ? BelongsToCollectionModel.fromJson(json["belongs_to_collection"]) : null,
         budget: json["budget"] as int?,
         genres: json["genres"] != null ? List<GenreModel>.from(json["genres"].map((x) => GenreModel.fromJson(x))) : [],

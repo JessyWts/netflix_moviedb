@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:netfix_moviedb/models/genre_model.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
+import 'package:netfix_moviedb/models/video_model.dart';
 import 'package:netfix_moviedb/services/api.dart';
 
 class APIService {
@@ -126,6 +127,22 @@ class APIService {
       MovieModel movie = MovieModel.fromJson(data);
 
       return movie;
+    } else {
+      throw response;
+    }
+  }
+
+  Future<MovieModel> getMoviesVideos({required MovieModel movie }) async {
+    Response response = await getData('/movie/${movie.id}/videos');
+
+    if (response.statusCode == 200) {
+      Map data = response.data;
+      List<VideoModel> videos = [];
+      videos = data["results"].map<VideoModel>((dynamic videoJson) {
+        return VideoModel.fromJson(videoJson);
+      }).toList();
+      
+      return movie.copyWith(videos: videos);
     } else {
       throw response;
     }
