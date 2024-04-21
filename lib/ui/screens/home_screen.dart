@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       body: ListView(
+        shrinkWrap: true,
         children: [
           SizedBox(
             height: 500.0,

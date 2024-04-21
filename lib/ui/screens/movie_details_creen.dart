@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:netfix_moviedb/ui/widgets/casting_card.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
@@ -7,7 +9,6 @@ import 'package:netfix_moviedb/ui/widgets/movie_infos.dart';
 import 'package:netfix_moviedb/ui/widgets/my_video_player.dart';
 import 'package:netfix_moviedb/ui/widgets/reusable_text.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
-import 'package:provider/provider.dart';
 
 class MovieDetailsCreen extends StatefulWidget {
   final MovieModel movie;
@@ -54,6 +55,7 @@ class _MovieDetailsCreenState extends State<MovieDetailsCreen> {
         : Padding(
           padding: const EdgeInsets.all(8.0),
           child: ListView(
+            shrinkWrap: true,
             children: [
               SizedBox(
                 height: 220.0,
@@ -81,6 +83,47 @@ class _MovieDetailsCreenState extends State<MovieDetailsCreen> {
                 fontWeight: FontWeight.w400
               ),
               const SizedBox(height: 20.0,),
+              const ReusableText(
+                text: 'Actors',
+                color: Colors.white,
+                fontSize: 16, 
+                fontWeight: FontWeight.bold
+              ),
+              const SizedBox(height: 10.0,),
+              SizedBox(
+                height: 360,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: newMovie!.cast?.length,
+                  itemBuilder: (context, index) {
+                    return newMovie!.cast?[index].profilePath == null
+                      ? const Center()
+                      : CastingCard(person: newMovie!.cast?[index]);
+                  },
+                ),
+              ),
+              const SizedBox(height: 20.0,),
+              const ReusableText(
+                text: 'Production Team',
+                color: Colors.white,
+                fontSize: 16, 
+                fontWeight: FontWeight.bold
+              ),
+              const SizedBox(height: 10.0,),
+              SizedBox(
+              height: 360,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: newMovie!.crew?.length,
+                itemBuilder: (context, index) {
+                  return newMovie!.crew?[index].profilePath == null
+                    ? const Center()
+                    : CastingCard(person: newMovie!.crew?[index]);
+                },
+              ),
+            )
             ]
           ),
         ),

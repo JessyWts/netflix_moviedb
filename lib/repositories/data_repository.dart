@@ -88,6 +88,8 @@ class DataRepository with ChangeNotifier {
        MovieModel movieDetails = await apiService.getMoviesDetails(movie: movie);
        // Get videos for the movie 
        movieDetails = await apiService.getMoviesVideos(movie: movieDetails);
+       // Get credits actors and production team
+       movieDetails = await apiService.getMoviescredits(movie: movieDetails);
       return movieDetails;
     } on Response catch (response) {
       debugPrint("Error: ${response.statusCode}");

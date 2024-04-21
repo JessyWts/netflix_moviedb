@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:netfix_moviedb/models/genre_model.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
+import 'package:netfix_moviedb/models/person_model.dart';
 import 'package:netfix_moviedb/models/video_model.dart';
 import 'package:netfix_moviedb/services/api.dart';
 
@@ -143,6 +144,28 @@ class APIService {
       }).toList();
       
       return movie.copyWith(videos: videos);
+    } else {
+      throw response;
+    }
+  }
+
+  Future<MovieModel> getMoviescredits({required MovieModel movie }) async {
+    Response response = await getData('/movie/${movie.id}/credits');
+
+    if (response.statusCode == 200) {
+      Map data = response.data;
+      List<PersonModel> cast = [];
+      List<PersonModel> crew = [];
+
+      cast = data["cast"].map<PersonModel>((dynamic castJson) {
+        return PersonModel.fromJson(castJson);
+      }).toList();
+
+      crew = data["crew"].map<PersonModel>((dynamic crewJson) {
+        return PersonModel.fromJson(crewJson);
+      }).toList();
+      
+      return movie.copyWith(cast: cast, crew: crew);
     } else {
       throw response;
     }

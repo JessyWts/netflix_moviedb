@@ -25,6 +25,7 @@ class MoviesByGenre extends StatelessWidget {
         ),
       ),
       body: ListView(
+        shrinkWrap: true,
         children: const [
           
         ],

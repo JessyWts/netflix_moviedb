@@ -1,4 +1,5 @@
 import 'package:netfix_moviedb/models/belongs_to_collection_model.dart';
+import 'package:netfix_moviedb/models/person_model.dart';
 import 'package:netfix_moviedb/models/production_company_model.dart';
 import 'package:netfix_moviedb/models/video_model.dart';
 import 'package:netfix_moviedb/services/api.dart';
@@ -36,8 +37,10 @@ class MovieModel {
     final double voteAverage;
     final int voteCount;
     final List<VideoModel>? videos;
+    final List<PersonModel>? cast;
+    final List<PersonModel>? crew;
 
-    MovieModel({
+    MovieModel( {
         required this.adult,
         this.backdropPath,
         required this.id,
@@ -65,7 +68,9 @@ class MovieModel {
         this.status,
         this.tagline,
         this.belongsToCollection,
-        this.videos
+        this.videos,
+        this.cast,
+        this.crew,
     });
 
     MovieModel copyWith({
@@ -97,6 +102,8 @@ class MovieModel {
         double? voteAverage,
         int? voteCount,
         List<VideoModel>? videos,
+        List<PersonModel>? cast,
+        List<PersonModel>? crew,
     }) => 
         MovieModel(
             adult: adult ?? this.adult,
@@ -127,6 +134,8 @@ class MovieModel {
             voteAverage: voteAverage ?? this.voteAverage,
             voteCount: voteCount ?? this.voteCount,
             videos: videos ?? this.videos,
+            cast: cast ?? this.cast,
+            crew: crew ?? this.crew,
         );
 
     factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(

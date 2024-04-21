@@ -39,6 +39,7 @@ class MovieCategory extends StatelessWidget {
                 return true;
               },
               child: ListView.builder(
+                shrinkWrap: true,
                 itemCount: movieList.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
