@@ -101,6 +101,22 @@ class APIService {
     }
   }
 
+  Future<List<GenreModel>> getTvGenres() async {
+    Response response = await getData('/genre/tv/list');
+
+    if (response.statusCode == 200) {
+      Map data = response.data;
+      
+      List<GenreModel> genres = data["genres"].map<GenreModel>((dynamic movieJson){
+       return GenreModel.fromJson(movieJson);
+      }).toList();
+
+      return genres;
+    } else {
+      throw response;
+    }
+  }
+
   Future<MovieModel> getMoviesDetails({required MovieModel movie }) async {
     Response response = await getData('/movie/${movie.id}');
 

@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ? const Center()
               : MovieCard(movie: dataprovider.popularMovieList.first),
           ),
-          GenreList(genresList: dataprovider.genresList),
+          GenreList(genresMovieList: dataprovider.genresMovieList, genresTVList: dataprovider.genresTvList, ),
           const SizedBox(height: 15.0,),
           MovieCategory(
             label: 'Tendances actuelles',
