@@ -21,9 +21,9 @@ class SpokenLanguage {
         );
 
     factory SpokenLanguage.fromJson(Map<String, dynamic> json) => SpokenLanguage(
-        englishName: json["english_name"],
-        iso6391: json["iso_639_1"],
-        name: json["name"],
+        englishName: json["english_name"] as String,
+        iso6391: json["iso_639_1"] as String,
+        name: json["name"] as String,
     );
 
     Map<String, dynamic> toJson() => {

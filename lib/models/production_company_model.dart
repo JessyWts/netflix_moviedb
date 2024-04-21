@@ -1,12 +1,12 @@
 class ProductionCompanyModel {
     final int id;
-    final String logoPath;
+    final String? logoPath;
     final String name;
     final String originCountry;
 
     ProductionCompanyModel({
         required this.id,
-        required this.logoPath,
+        this.logoPath,
         required this.name,
         required this.originCountry,
     });
@@ -25,10 +25,10 @@ class ProductionCompanyModel {
         );
 
     factory ProductionCompanyModel.fromJson(Map<String, dynamic> json) => ProductionCompanyModel(
-        id: json["id"],
-        logoPath: json["logo_path"],
-        name: json["name"],
-        originCountry: json["origin_country"],
+        id: json["id"] as int,
+        logoPath: json["logo_path"] as String?,
+        name: json["name"]  as String,
+        originCountry: json["origin_country"] as String,
     );
 
     Map<String, dynamic> toJson() => {

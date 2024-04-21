@@ -18,7 +18,7 @@ class GenreModel {
 
     factory GenreModel.fromJson(Map<String, dynamic> json) => GenreModel(
         id: json["id"],
-        name: json["name"],
+        name: json["name"] as String,
     );
 
     Map<String, dynamic> toJson() => {

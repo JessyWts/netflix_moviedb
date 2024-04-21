@@ -1,14 +1,14 @@
 class BelongsToCollectionModel {
     final int id;
     final String name;
-    final String posterPath;
-    final String backdropPath;
+    final String? posterPath;
+    final String? backdropPath;
 
     BelongsToCollectionModel({
         required this.id,
         required this.name,
-        required this.posterPath,
-        required this.backdropPath,
+        this.posterPath,
+        this.backdropPath,
     });
 
     BelongsToCollectionModel copyWith({
@@ -26,9 +26,9 @@ class BelongsToCollectionModel {
 
     factory BelongsToCollectionModel.fromJson(Map<String, dynamic> json) => BelongsToCollectionModel(
         id: json["id"],
-        name: json["name"],
-        posterPath: json["poster_path"],
-        backdropPath: json["backdrop_path"],
+        name: json["name"] as String,
+        posterPath: json["poster_path"] as String?,
+        backdropPath: json["backdrop_path"] as String?,
     );
 
     Map<String, dynamic> toJson() => {
