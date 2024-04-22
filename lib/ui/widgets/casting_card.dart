@@ -39,7 +39,7 @@ class CastingCard extends StatelessWidget {
             ),
             child: SizedBox(
               width: 150,
-              child: person!.name != null
+              child: person?.name != null
                 ? ReusableText(
                     text: person!.name,
                     color: Colors.black,

@@ -1,6 +1,6 @@
 # netfix_moviedb
 
-A new Flutter project.
+A new Flutter project usin themoviedb api.
 
 ## Getting Started
 

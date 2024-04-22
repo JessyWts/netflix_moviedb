@@ -85,11 +85,12 @@ class DataRepository with ChangeNotifier {
 
   Future<MovieModel> getMoviesDetails({required MovieModel movie }) async {
     try {
-       MovieModel movieDetails = await apiService.getMoviesDetails(movie: movie);
-       // Get videos for the movie 
-       movieDetails = await apiService.getMoviesVideos(movie: movieDetails);
-       // Get credits actors and production team
-       movieDetails = await apiService.getMoviescredits(movie: movieDetails);
+      //  MovieModel movieDetails = await apiService.getMoviesDetails(movie: movie);
+      //  // Get videos for the movie 
+      //  movieDetails = await apiService.getMoviesVideos(movie: movieDetails);
+      //  // Get credits actors and production team
+      //  movieDetails = await apiService.getMoviescredits(movie: movieDetails);
+       MovieModel movieDetails = await apiService.getMovie(movie: movie);
       return movieDetails;
     } on Response catch (response) {
       debugPrint("Error: ${response.statusCode}");

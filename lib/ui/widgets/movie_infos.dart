@@ -42,7 +42,7 @@ class MovieInfos extends StatelessWidget {
             ),
             const SizedBox(width: 5.0,),
             ReusableText(
-              text: 'Recommandé à ${(movie.voteCount * 10).toInt()}%',
+              text: 'Recommandé à ${(movie.voteAverage * 10).toInt()}%',
               color: Colors.green,
               fontSize: 12,
               fontWeight: FontWeight.w500

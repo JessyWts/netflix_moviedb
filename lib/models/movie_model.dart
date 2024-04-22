@@ -1,4 +1,5 @@
 import 'package:netfix_moviedb/models/belongs_to_collection_model.dart';
+import 'package:netfix_moviedb/models/image_model.dart';
 import 'package:netfix_moviedb/models/person_model.dart';
 import 'package:netfix_moviedb/models/production_company_model.dart';
 import 'package:netfix_moviedb/models/video_model.dart';
@@ -37,6 +38,7 @@ class MovieModel {
     final double voteAverage;
     final int voteCount;
     final List<VideoModel>? videos;
+    final ImageModel? images;
     final List<PersonModel>? cast;
     final List<PersonModel>? crew;
 
@@ -69,6 +71,7 @@ class MovieModel {
         this.tagline,
         this.belongsToCollection,
         this.videos,
+        this.images,
         this.cast,
         this.crew,
     });
@@ -102,6 +105,7 @@ class MovieModel {
         double? voteAverage,
         int? voteCount,
         List<VideoModel>? videos,
+        ImageModel? images,
         List<PersonModel>? cast,
         List<PersonModel>? crew,
     }) => 
@@ -134,6 +138,7 @@ class MovieModel {
             voteAverage: voteAverage ?? this.voteAverage,
             voteCount: voteCount ?? this.voteCount,
             videos: videos ?? this.videos,
+            images: images ?? this.images,
             cast: cast ?? this.cast,
             crew: crew ?? this.crew,
         );

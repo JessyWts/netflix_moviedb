@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netfix_moviedb/ui/widgets/casting_card.dart';
+import 'package:netfix_moviedb/ui/widgets/galery_card.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
@@ -112,18 +113,39 @@ class _MovieDetailsCreenState extends State<MovieDetailsCreen> {
               ),
               const SizedBox(height: 10.0,),
               SizedBox(
-              height: 360,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                itemCount: newMovie!.crew?.length,
-                itemBuilder: (context, index) {
-                  return newMovie!.crew?[index].profilePath == null
-                    ? const Center()
-                    : CastingCard(person: newMovie!.crew?[index]);
-                },
+                height: 360,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: newMovie!.crew?.length,
+                  itemBuilder: (context, index) {
+                    return newMovie!.crew?[index].profilePath == null
+                      ? const Center()
+                      : CastingCard(person: newMovie!.crew?[index]);
+                  },
+                ),
               ),
-            )
+              const SizedBox(height: 20.0,),
+              const ReusableText(
+                text: 'Images',
+                color: Colors.white,
+                fontSize: 16, 
+                fontWeight: FontWeight.bold
+              ),
+              const SizedBox(height: 10.0,),
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  itemCount: newMovie!.images?.backdrops?.length,
+                  itemBuilder: (context, index) {
+                    return newMovie!.images?.backdrops == null
+                      ? const Center()
+                      : GaleryCard(image: newMovie!.images?.backdrops?[index]);
+                  },
+                ),
+              ),
             ]
           ),
         ),

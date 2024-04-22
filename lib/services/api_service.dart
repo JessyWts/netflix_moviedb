@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:netfix_moviedb/models/genre_model.dart';
+import 'package:netfix_moviedb/models/image_model.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/models/person_model.dart';
 import 'package:netfix_moviedb/models/video_model.dart';
@@ -166,6 +167,49 @@ class APIService {
       }).toList();
       
       return movie.copyWith(cast: cast, crew: crew);
+    } else {
+      throw response;
+    }
+  }
+
+  /// using api fonctionality
+  /// Combine querie at once
+  Future<MovieModel> getMovie({required MovieModel movie }) async {
+    Response response = await getData('/movie/${movie.id}',
+      params: {
+        'include_image_language': "null",
+        'append_to_response': 'videos,images,credits',
+      }
+    );
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = response.data;
+      List<VideoModel> videos = [];
+      List<PersonModel> cast = [];
+      List<PersonModel> crew = [];
+
+      MovieModel newMovie = MovieModel.fromJson(data);
+
+      cast = data["credits"]["cast"].map<PersonModel>((dynamic castJson) {
+        return PersonModel.fromJson(castJson);
+      }).toList();
+
+      crew = data["credits"]["crew"].map<PersonModel>((dynamic crewJson) {
+        return PersonModel.fromJson(crewJson);
+      }).toList();
+
+      videos = data["videos"]["results"].map<VideoModel>((dynamic videoJson) {
+        return VideoModel.fromJson(videoJson);
+      }).toList();
+
+      ImageModel images = ImageModel.fromJson(data["images"]);
+      
+      return newMovie.copyWith(
+        cast: cast,
+        crew: crew,
+        images: images,
+        videos: videos,
+      );
     } else {
       throw response;
     }
