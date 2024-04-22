@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:netfix_moviedb/models/genre_model.dart';
-import 'package:netfix_moviedb/models/movie_model.dart';
+import 'package:netfix_moviedb/models/models.dart';
 import 'package:netfix_moviedb/services/api_service.dart';
 
 class DataRepository with ChangeNotifier {

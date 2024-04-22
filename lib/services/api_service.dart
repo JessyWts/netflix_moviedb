@@ -1,9 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:netfix_moviedb/models/genre_model.dart';
-import 'package:netfix_moviedb/models/image_model.dart';
-import 'package:netfix_moviedb/models/movie_model.dart';
-import 'package:netfix_moviedb/models/person_model.dart';
-import 'package:netfix_moviedb/models/video_model.dart';
+import 'package:netfix_moviedb/models/models.dart';
 import 'package:netfix_moviedb/services/api.dart';
 
 class APIService {

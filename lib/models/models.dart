@@ -1,0 +1,9 @@
+export 'belongs_to_collection_model.dart';
+export 'genre_model.dart';
+export 'image_model.dart';
+export 'movie_model.dart';
+export 'person_model.dart';
+export 'production_company_model.dart';
+export 'production_country_model.dart';
+export 'spoken_language_model.dart';
+export 'video_model.dart';

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
-import 'package:netfix_moviedb/ui/widgets/genre_list.dart';
-import 'package:netfix_moviedb/ui/widgets/movie_card.dart';
-import 'package:netfix_moviedb/ui/widgets/movie_category.dart';
+import 'package:netfix_moviedb/ui/widgets/widgets.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
 import 'package:provider/provider.dart';
 

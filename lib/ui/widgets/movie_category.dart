@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
-import 'package:netfix_moviedb/ui/widgets/movie_card.dart';
-import 'package:netfix_moviedb/ui/widgets/reusable_text.dart';
+import 'package:netfix_moviedb/ui/widgets/widgets.dart';
 
 class MovieCategory extends StatelessWidget {
   final String label;

@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:netfix_moviedb/ui/widgets/casting_card.dart';
-import 'package:netfix_moviedb/ui/widgets/galery_card.dart';
+import 'package:netfix_moviedb/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:netfix_moviedb/models/movie_model.dart';
 import 'package:netfix_moviedb/repositories/data_repository.dart';
-import 'package:netfix_moviedb/ui/widgets/action_button.dart';
-import 'package:netfix_moviedb/ui/widgets/movie_infos.dart';
-import 'package:netfix_moviedb/ui/widgets/my_video_player.dart';
-import 'package:netfix_moviedb/ui/widgets/reusable_text.dart';
 import 'package:netfix_moviedb/utils/constants.dart';
 
 class MovieDetailsCreen extends StatefulWidget {

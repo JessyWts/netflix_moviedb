@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:netfix_moviedb/models/image_model.dart';
-import 'package:netfix_moviedb/ui/widgets/reusable_text.dart';
 
 class GaleryCard extends StatelessWidget {
   const GaleryCard({
