@@ -22,6 +22,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void initData() async {
     final dataProvider = Provider.of<DataRepository>(context, listen: false);
     await dataProvider.initData();
+    if(!mounted) return;
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) {

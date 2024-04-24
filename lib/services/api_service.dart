@@ -146,7 +146,7 @@ class APIService {
     }
   }
 
-  Future<MovieModel> getMoviescredits({required MovieModel movie }) async {
+  Future<MovieModel> getMoviesCredits({required MovieModel movie }) async {
     Response response = await getData('/movie/${movie.id}/credits');
 
     if (response.statusCode == 200) {
@@ -206,6 +206,45 @@ class APIService {
         images: images,
         videos: videos,
       );
+    } else {
+      throw response;
+    }
+  }
+
+  /// https://developer.themoviedb.org/reference/discover-movie
+  /// take multi parameters
+  // Future<List<MovieModel>> getDiscoverMovies({required GenreModel genre, required int pageNumber}) async {
+  //   Response response = await getData('/discover/movie', params: {
+  //     'page': 1,
+  //     'with_genres': genre.id
+  //   });
+
+  //   if (response.statusCode == 200) {
+  //     Map data = response.data;
+  //     print(data);
+  //     List<MovieModel> movies = data["results"].map<MovieModel>((dynamic movieJson){
+  //      return MovieModel.fromJson(movieJson);
+  //     }).toList();
+
+  //     return movies;
+  //   } else {
+  //     throw response;
+  //   }
+  // }
+
+  Future<List<MovieModel>> getDiscoverMovies({required GenreModel genre}) async {
+    Response response = await getData('/discover/movie', params: {
+      'page': 1,
+      'with_genres': genre.id
+    });
+
+    if (response.statusCode == 200) {
+      Map data = response.data;
+      List<MovieModel> movies = data["results"].map<MovieModel>((dynamic movieJson){
+       return MovieModel.fromJson(movieJson);
+      }).toList();
+
+      return movies;
     } else {
       throw response;
     }

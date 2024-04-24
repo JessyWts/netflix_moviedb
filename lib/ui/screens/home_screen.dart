@@ -26,52 +26,57 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      appBar: AppBar(
-        backgroundColor: kBackgroundColor,
-         iconTheme: const IconThemeData(
-          color: Colors.white
-        ),
-        leading: Image.asset('assets/images/netflix_logo_2.png'),
-        actions:  [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.menu,)
+      body: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) => [
+          CustomAppBar(
+            leading: Image.asset('assets/images/netflix_logo_2.png'),
+            actions:  [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.menu,)
+              )
+            ],
           )
         ],
-      ),
-      body: ListView(
-        shrinkWrap: true,
-        children: [
-          SizedBox(
-            height: 500.0,
-            child: dataprovider.popularMovieList.isEmpty
-              ? const Center()
-              : MovieCard(movie: dataprovider.popularMovieList.first),
+        body: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+              SizedBox(
+                height: 500.0,
+                child: dataprovider.popularMovieList.isEmpty
+                  ? const Center()
+                  : MovieCard(movie: dataprovider.popularMovieList.first),
+              ),
+              GenreList(genresMovieList: dataprovider.genresMovieList, genresTVList: dataprovider.genresTvList, ),
+              const SizedBox(height: 15.0,),
+              MovieCategory(
+                label: 'Populaire',
+                imageHeight: 160.0,
+                imageWidth: 110.0,
+                movieList: dataprovider.popularMovieList,
+                callback: dataprovider.getPopularMovies,
+              ),
+              MovieCategory(
+                label: 'Du moment',
+                imageHeight: 320.0,
+                imageWidth: 220.0,
+                movieList:  dataprovider.nowPlayingMovieList,
+                callback: dataprovider.getNowPlayingMovies,
+              ),
+              MovieCategory(
+                label: 'A venir',
+                imageHeight: 160,
+                imageWidth: 110.0,
+                movieList: dataprovider.upcomingMovieList,
+                callback: dataprovider.getUpcomingMovies,
+              ),
+            ],
           ),
-          GenreList(genresMovieList: dataprovider.genresMovieList, genresTVList: dataprovider.genresTvList, ),
-          const SizedBox(height: 15.0,),
-          MovieCategory(
-            label: 'Tendances actuelles',
-            imageHeight: 160.0,
-            imageWidth: 110.0,
-            movieList: dataprovider.popularMovieList,
-            callback: dataprovider.getPopularMovies,
-          ),
-          MovieCategory(
-            label: 'Actuellement au cinema',
-            imageHeight: 320.0,
-            imageWidth: 220.0,
-            movieList:  dataprovider.nowPlayingMovieList,
-            callback: dataprovider.getNowPlayingMovies,
-          ),
-          MovieCategory(
-            label: 'Bientôt disponible',
-            imageHeight: 160,
-            imageWidth: 110.0,
-            movieList: dataprovider.upcomingMovieList,
-            callback: dataprovider.getUpcomingMovies,
-          ),
-        ],
+        ),
       ),
     );
   }
