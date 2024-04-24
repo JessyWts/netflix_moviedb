@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:netfix_moviedb/models/models.dart';
 import 'package:netfix_moviedb/ui/screens/movie_details_creen.dart';
@@ -38,15 +39,11 @@ class MovieGenreGridView extends StatelessWidget {
     
         return GestureDetector(
           onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => MovieDetailsCreen(movie: movie,),)),
-          child: Container(
-            color: Colors.pink.withOpacity(0.5),
-            child: Center(
-              child: ReusableText(
-                text: movie.title, 
-                color: Colors.white, 
-                fontSize: 15, 
-                fontWeight: FontWeight.w600
-              ),
+          child: CachedNetworkImage(
+            imageUrl: movie.posterURL(),
+            fit: BoxFit.cover,
+            errorWidget: (context, url, error) => const Center(
+              child: Icon(Icons.error),
             ),
           ),
         );
