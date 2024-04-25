@@ -15,8 +15,7 @@ class DataRepository with ChangeNotifier {
   final List<MovieModel> _upcomingMovieList = [];
   int _upcominMoviePageIndex = 1;
 
-  // final List<MovieModel> _movieListByGenreList = [];
-  // int __movieListByGenrePageIndex = 1;
+  final List<MovieModel> _movieListByGenreList = [];
 
   List<GenreModel> genresMovieList = [];
   List<GenreModel> genresTvList = [];
@@ -24,7 +23,7 @@ class DataRepository with ChangeNotifier {
   List<MovieModel> get popularMovieList => _popularMovieList;
   List<MovieModel> get nowPlayingMovieList => _nowPlayingMovieList;
   List<MovieModel> get upcomingMovieList => _upcomingMovieList;
-  // List<MovieModel> get movieListByGenreList => _movieListByGenreList;
+  List<MovieModel> get movieListByGenreList => _movieListByGenreList;
 
   Future<void> getPopularMovies() async {
     try {
@@ -65,9 +64,6 @@ class DataRepository with ChangeNotifier {
   Future<void> getMoviesGenres() async {
     try {
       genresMovieList = await apiService.getMoviesGenres();
-      // notifyListeners();
-      // List<GenreModel> genresList = await apiService.getMoviesGenres();
-      // return genresList;
     } on Response catch (response) {
       debugPrint("Error: ${response.statusCode}");
       rethrow;
@@ -77,9 +73,6 @@ class DataRepository with ChangeNotifier {
   Future<void> getTvGenres() async {
     try {
       genresTvList = await apiService.getTvGenres();
-      // notifyListeners();
-      // List<GenreModel> genresList = await apiService.getMoviesGenres();
-      // return genresList;
     } on Response catch (response) {
       debugPrint("Error: ${response.statusCode}");
       rethrow;
@@ -88,11 +81,6 @@ class DataRepository with ChangeNotifier {
 
   Future<MovieModel> getMoviesDetails({required MovieModel movie }) async {
     try {
-      //  MovieModel movieDetails = await apiService.getMoviesDetails(movie: movie);
-      //  // Get videos for the movie 
-      //  movieDetails = await apiService.getMoviesVideos(movie: movieDetails);
-      //  // Get credits actors and production team
-      //  movieDetails = await apiService.getMoviescredits(movie: movieDetails);
        MovieModel movieDetails = await apiService.getMovie(movie: movie);
       return movieDetails;
     } on Response catch (response) {
@@ -111,23 +99,21 @@ class DataRepository with ChangeNotifier {
     ]);
   }
 
-  // Future<List<MovieModel>> getMoviesByGenre({required GenreModel genre}) async {
-  //   try {
-  //     List<MovieModel> movies = await apiService.getDiscoverMovies(genre: genre , pageNumber: __movieListByGenrePageIndex);
-  //     _movieListByGenreList.addAll(movies);
-  //     __movieListByGenrePageIndex++;
-  //     notifyListeners();
-  //     return _movieListByGenreList;
-  //   } on Response catch (response) {
-  //     debugPrint("Error: ${response.statusCode}");
-  //     rethrow;
-  //   }
-  // }
-
-  Future<List<MovieModel>> getMoviesByGenre({required GenreModel genre}) async {
+  Future<List<MovieModel>> getMoviesByGenreFirst({required GenreModel genre, required int pageNumber}) async {
     try {
-      List<MovieModel> movies = await apiService.getDiscoverMovies(genre: genre);
+      List<MovieModel> movies = await apiService.getDiscoverMovies(genre: genre, pageNumber: pageNumber);
       return movies;
+    } on Response catch (response) {
+      debugPrint("Error: ${response.statusCode}");
+      rethrow;
+    }
+  }
+
+  Future<void> getMoviesByGenre({required GenreModel genre, required int pageNumber}) async {
+    try {
+      List<MovieModel> movies = await apiService.getDiscoverMovies(genre: genre , pageNumber: pageNumber);
+      _movieListByGenreList.addAll(movies);
+      notifyListeners();
     } on Response catch (response) {
       debugPrint("Error: ${response.statusCode}");
       rethrow;

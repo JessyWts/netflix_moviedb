@@ -27,93 +27,56 @@ class APIService {
     }
   }
 
-  Future<List<MovieModel>> getPopularMovies({required int pageNumber}) async {
-    Response response = await getData('/movie/popular', params: {
-      'page': pageNumber
-    });
+  Future<List<MovieModel>> getMoviesFromResponse(String endpoint, {required int pageNumber}) async {
+    Response response = await getData(endpoint, params: {'page': pageNumber});
 
     if (response.statusCode == 200) {
       Map data = response.data;
       List<dynamic> results = data["results"];
-      List<MovieModel> movies = [];
-
-      for (Map<String, dynamic> json in results) {
-        MovieModel movie = MovieModel.fromJson(json);
-        movies.add(movie);
-      }
+      List<MovieModel> movies = results.map<MovieModel>((dynamic movieJson) {
+        return MovieModel.fromJson(movieJson);
+      }).toList();
 
       return movies;
     } else {
       throw response;
     }
+  }
+
+  Future<List<MovieModel>> getPopularMovies({required int pageNumber}) async {
+    return getMoviesFromResponse('/movie/popular', pageNumber: pageNumber);
   }
 
   Future<List<MovieModel>> getNowPlayingMovies({required int pageNumber}) async {
-    Response response = await getData('/movie/now_playing', params: {
-      'page': pageNumber
-    });
-
-    if (response.statusCode == 200) {
-      Map data = response.data;
-      
-      List<MovieModel> movies = data["results"].map<MovieModel>((dynamic movieJson){
-       return MovieModel.fromJson(movieJson);
-      }).toList();
-
-      return movies;
-    } else {
-      throw response;
-    }
+    return getMoviesFromResponse('/movie/now_playing', pageNumber: pageNumber);
   }
 
   Future<List<MovieModel>> geUpcomingMovies({required int pageNumber}) async {
-    Response response = await getData('/movie/upcoming', params: {
-      'page': pageNumber
-    });
+    return getMoviesFromResponse('/movie/upcoming', pageNumber: pageNumber);
+  }
+
+  Future<List<GenreModel>> getGenresFromResponse(String endpoint) async {
+    Response response = await getData(endpoint);
 
     if (response.statusCode == 200) {
       Map data = response.data;
       
-      List<MovieModel> movies = data["results"].map<MovieModel>((dynamic movieJson){
-       return MovieModel.fromJson(movieJson);
+      List<GenreModel> genres = data["genres"].map<GenreModel>((dynamic movieJson){
+       return GenreModel.fromJson(movieJson);
       }).toList();
 
-      return movies;
+      return genres;
     } else {
       throw response;
     }
   }
 
   Future<List<GenreModel>> getMoviesGenres() async {
-    Response response = await getData('/genre/movie/list');
-
-    if (response.statusCode == 200) {
-      Map data = response.data;
-      
-      List<GenreModel> genres = data["genres"].map<GenreModel>((dynamic movieJson){
-       return GenreModel.fromJson(movieJson);
-      }).toList();
-
-      return genres;
-    } else {
-      throw response;
-    }
+    return getGenresFromResponse('/genre/movie/list');
   }
 
   Future<List<GenreModel>> getTvGenres() async {
-    Response response = await getData('/genre/tv/list');
-
-    if (response.statusCode == 200) {
-      Map data = response.data;
-      
-      List<GenreModel> genres = data["genres"].map<GenreModel>((dynamic movieJson){
-       return GenreModel.fromJson(movieJson);
-      }).toList();
-
-      return genres;
-    } else {
-      throw response;
-    }
+    return getGenresFromResponse('/genre/tv/list');
   }
 
   Future<MovieModel> getMoviesDetails({required MovieModel movie }) async {
@@ -171,7 +134,7 @@ class APIService {
   /// using api fonctionality
   /// Combine querie at once
   Future<MovieModel> getMovie({required MovieModel movie }) async {
-    Response response = await getData('/movie/${movie.id}',
+    final Response response = await getData('/movie/${movie.id}',
       params: {
         'include_image_language': "null",
         'append_to_response': 'videos,images,credits',
@@ -179,62 +142,56 @@ class APIService {
     );
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> data = response.data;
-      List<VideoModel> videos = [];
-      List<PersonModel> cast = [];
-      List<PersonModel> crew = [];
+      final Map<String, dynamic> data = response.data;
 
-      MovieModel newMovie = MovieModel.fromJson(data);
+      final List<Future<dynamic>> futures = [
+        Future.delayed(const Duration(milliseconds: 200), () => MovieModel.fromJson(data)),
+        Future.delayed(const Duration(milliseconds: 200), () => _getCastAndCrew(data)),
+        Future.delayed(const Duration(milliseconds: 200), () => _getVideos(data)),
+        Future.delayed(const Duration(milliseconds: 200), () => _getImages(data)),
+      ];
 
-      cast = data["credits"]["cast"].map<PersonModel>((dynamic castJson) {
-        return PersonModel.fromJson(castJson);
-      }).toList();
+      final results = await Future.wait(futures);
 
-      crew = data["credits"]["crew"].map<PersonModel>((dynamic crewJson) {
-        return PersonModel.fromJson(crewJson);
-      }).toList();
-
-      videos = data["videos"]["results"].map<VideoModel>((dynamic videoJson) {
-        return VideoModel.fromJson(videoJson);
-      }).toList();
-
-      ImageModel images = ImageModel.fromJson(data["images"]);
-      
-      return newMovie.copyWith(
-        cast: cast,
-        crew: crew,
-        images: images,
-        videos: videos,
-      );
+      return results[0].copyWith(cast: results[1], videos: results[2], images: results[3]);
     } else {
       throw response;
     }
   }
 
+  Future<List<PersonModel>> _getCastAndCrew(Map<String, dynamic> data) async {
+  final List<PersonModel> cast = data["credits"]["cast"].map<PersonModel>((dynamic castJson) {
+    return PersonModel.fromJson(castJson);
+  }).toList();
+
+  final List<PersonModel> crew = data["credits"]["crew"].map<PersonModel>((dynamic crewJson) {
+    return PersonModel.fromJson(crewJson);
+  }).toList();
+
+  return [...cast, ...crew];
+}
+
+Future<List<VideoModel>> _getVideos(Map<String, dynamic> data) async {
+  final List<VideoModel> videos = data["videos"]["results"].map<VideoModel>((dynamic videoJson) {
+    return VideoModel.fromJson(videoJson);
+  }).toList();
+
+  return videos;
+}
+
+Future<ImageModel> _getImages(Map<String, dynamic> data) async {
+  final ImageModel images = ImageModel.fromJson(data["images"]);
+  return images;
+}
+
   /// https://developer.themoviedb.org/reference/discover-movie
   /// take multi parameters
-  // Future<List<MovieModel>> getDiscoverMovies({required GenreModel genre, required int pageNumber}) async {
-  //   Response response = await getData('/discover/movie', params: {
-  //     'page': 1,
-  //     'with_genres': genre.id
-  //   });
-
-  //   if (response.statusCode == 200) {
-  //     Map data = response.data;
-  //     print(data);
-  //     List<MovieModel> movies = data["results"].map<MovieModel>((dynamic movieJson){
-  //      return MovieModel.fromJson(movieJson);
-  //     }).toList();
-
-  //     return movies;
-  //   } else {
-  //     throw response;
-  //   }
-  // }
-
-  Future<List<MovieModel>> getDiscoverMovies({required GenreModel genre}) async {
+  Future<List<MovieModel>> getDiscoverMovies({required GenreModel genre, required int pageNumber}) async {
     Response response = await getData('/discover/movie', params: {
-      'page': 1,
+      'page': pageNumber,
+      'include_adult': false,
+      'include_video': false,
+      'sort_by': 'popularity.desc',
       'with_genres': genre.id
     });
 
