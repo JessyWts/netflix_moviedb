@@ -16,6 +16,7 @@ class MoviesByGenreScreen extends StatefulWidget {
 
 class _MoviesByGenreScreenState extends State<MoviesByGenreScreen> {
   List<MovieModel>? movies;
+  int pageIndex = 1;
 
   @override
   void initState() {
@@ -26,7 +27,8 @@ class _MoviesByGenreScreenState extends State<MoviesByGenreScreen> {
   Future<void> getMoviesByGenre () async {
     final dataProvider = Provider.of<DataRepository>(context, listen: false);
 
-    List<MovieModel> moviesList = await dataProvider.getMoviesByGenre(genre: widget.genre);
+    List<MovieModel> moviesList = await dataProvider.getMoviesByGenreFirst(genre: widget.genre, pageNumber: pageIndex);
+    dataProvider.movieListByGenreList.clear();
     setState(() {
       movies = moviesList;
     });
@@ -34,7 +36,7 @@ class _MoviesByGenreScreenState extends State<MoviesByGenreScreen> {
   
   @override
   Widget build(BuildContext context) {
-    // final dataprovider = Provider.of<DataRepository>(context);
+    final dataprovider = Provider.of<DataRepository>(context);
     
     return Scaffold(
       backgroundColor: kBackgroundColor,
@@ -61,13 +63,15 @@ class _MoviesByGenreScreenState extends State<MoviesByGenreScreen> {
           context: context,
           removeTop: true,
           child: MovieGenreGridView(
-            label: 'label',
             movieList: movies!,
-            // movieList: dataprovider.movieListByGenreList,
             genre: widget.genre,
-            imageHeight: 160.0,
-            imageWidth: 110.0,
-            // callback: dataprovider.getMoviesByGenre(genre: widget.genre)
+            callback: () {
+              setState(() {
+                pageIndex++;
+                dataprovider.getMoviesByGenre(genre: widget.genre, pageNumber: pageIndex);
+                movies!.addAll(dataprovider.movieListByGenreList);
+              });
+            }
           ),
         ),
       ),
