@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:netfix_moviedb/models/models.dart';
+import 'package:netfix_moviedb/ui/screens/home_screen.dart';
 import 'package:netfix_moviedb/ui/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -56,6 +58,17 @@ class _MovieDetailsCreenState extends State<MovieDetailsCreen> {
                 fontSize: 16, 
                 fontWeight: FontWeight.bold
               ),
+              actions: [
+                IconButton(
+                  onPressed: (){
+                    Navigator.pushAndRemoveUntil(
+                      context,   
+                      MaterialPageRoute(builder: (BuildContext context) => const HomeScreen()), 
+                      ModalRoute.withName('/')
+                    );
+                  },
+                  icon: Image.asset('assets/images/netflix_logo_2.png'))
+              ],
             )
           ],
           body: Padding(
@@ -92,47 +105,9 @@ class _MovieDetailsCreenState extends State<MovieDetailsCreen> {
                     fontWeight: FontWeight.w400
                   ),
                   const SizedBox(height: 20.0,),
-                  const ReusableText(
-                    text: 'Actors',
-                    color: Colors.white,
-                    fontSize: 16, 
-                    fontWeight: FontWeight.bold
-                  ),
-                  const SizedBox(height: 10.0,),
-                  SizedBox(
-                    height: 360,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: newMovie!.cast?.length,
-                      itemBuilder: (context, index) {
-                        return newMovie!.cast?[index].profilePath == null
-                          ? const Center()
-                          : CastingCard(person: newMovie!.cast?[index]);
-                      },
-                    ),
-                  ),
+                  CreditView(sectionText: 'Actors', persons: newMovie?.cast),
                   const SizedBox(height: 20.0,),
-                  const ReusableText(
-                    text: 'Production Team',
-                    color: Colors.white,
-                    fontSize: 16, 
-                    fontWeight: FontWeight.bold
-                  ),
-                  const SizedBox(height: 10.0,),
-                  SizedBox(
-                    height: 360,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemCount: newMovie!.crew?.length,
-                      itemBuilder: (context, index) {
-                        return newMovie!.crew?[index].profilePath == null
-                          ? const Center()
-                          : CastingCard(person: newMovie!.crew?[index]);
-                      },
-                    ),
-                  ),
+                  CreditView(sectionText: 'Production Team', persons: newMovie?.crew),
                   const SizedBox(height: 20.0,),
                   const ReusableText(
                     text: 'Images',

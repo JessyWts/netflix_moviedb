@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:netfix_moviedb/models/belongs_to_collection_model.dart';
 import 'package:netfix_moviedb/models/image_model.dart';
 import 'package:netfix_moviedb/models/person_model.dart';
@@ -27,7 +28,7 @@ class MovieModel {
     final String? posterPath;
     final List<ProductionCompanyModel>? productionCompanies;
     final List<ProductionCountryModel>? productionCountries;
-    final DateTime releaseDate;
+    final String? releaseDate;
     final int? revenue;
     final int? runtime;
     final List<SpokenLanguage>? spokenLanguages;
@@ -51,7 +52,7 @@ class MovieModel {
         required this.overview,
         required this.popularity,
         required this.posterPath,
-        required this.releaseDate,
+        this.releaseDate,
         required this.title,
         required this.voteAverage,
         required this.voteCount,
@@ -94,7 +95,7 @@ class MovieModel {
         String? posterPath,
         List<ProductionCompanyModel>? productionCompanies,
         List<ProductionCountryModel>? productionCountries,
-        DateTime? releaseDate,
+        String? releaseDate,
         int? revenue,
         int? runtime,
         List<SpokenLanguage>? spokenLanguages,
@@ -161,7 +162,7 @@ class MovieModel {
         posterPath: json["poster_path"] as String?,
         productionCompanies: json["production_companies"] != null ? List<ProductionCompanyModel>.from(json["production_companies"].map((x) => ProductionCompanyModel.fromJson(x))) : [],
         productionCountries: json["production_countries"] != null ? List<ProductionCountryModel>.from(json["production_countries"].map((x) => ProductionCountryModel.fromJson(x))) : [],
-        releaseDate: DateTime.parse(json["release_date"]),
+        releaseDate: json["release_date"] as String?,
         revenue: json["revenue"] as int?,
         runtime: json["runtime"]as int?,
         spokenLanguages: json["spoken_languages"] != null ? List<SpokenLanguage>.from(json["spoken_languages"].map((x) => SpokenLanguage.fromJson(x))) : [],
@@ -188,5 +189,13 @@ class MovieModel {
         }
       }
       return categories;
+    }
+
+    String formatReleaseDate() {
+      if (releaseDate != null) {
+
+        return releaseDate.toString().substring(0, 4);
+      }
+      return 'not specified';
     }
 }

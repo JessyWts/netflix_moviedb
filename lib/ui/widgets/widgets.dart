@@ -9,3 +9,4 @@ export 'my_video_player.dart';
 export 'reusable_text.dart';
 export 'custom_app_bar.dart';
 export 'movie_genre_grid_view.dart';
+export 'credit_view.dart';

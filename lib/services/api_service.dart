@@ -153,7 +153,17 @@ class APIService {
 
       final results = await Future.wait(futures);
 
-      return results[0].copyWith(cast: results[1], videos: results[2], images: results[3]);
+      final movieDetails = results[0] as MovieModel;
+      final castAndCrew = results[1] as List<PersonModel>;
+      final videos = results[2] as List<VideoModel>; 
+      final images = results[3] as ImageModel;
+
+      return movieDetails.copyWith(
+        cast: castAndCrew.where((person) => person.castId != null || person.character != null ).toList(),
+        crew: castAndCrew.where((person) => person.job != null || person.department != null ).toList(),
+        videos: videos,
+        images: images
+      );
     } else {
       throw response;
     }

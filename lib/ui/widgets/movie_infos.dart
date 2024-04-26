@@ -66,7 +66,7 @@ class MovieInfos extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5.0),
               ),
               child: ReusableText(
-                text: movie.releaseDate.toString().substring(0, 4),
+                text: movie.formatReleaseDate(),
                 color: Colors.white,
                 fontSize: 12,
                 fontWeight: FontWeight.w500
